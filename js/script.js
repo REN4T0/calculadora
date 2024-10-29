@@ -1,10 +1,11 @@
 function calculator() {
     return {
-        validKeys: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '(', ')', '*', '/', '+', '-', 'Enter', 'Backspace'],
+        validKeys: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '(', ')', '*', '/', '+', '-', 'Enter', 'Backspace', 'Delete', '=', 'C', 'CE'],
         signals: ["*", "/", "+", "-", "(", ")"],
         operation: [],
-        calculation: [],
+        calculation: [], 
         result: '',
+        argument: '', // A chave 'argument' vai armazenar 1 número e um sinal de operação por vez, no formato string
 
         multiplyNdivide() {
             // Muliplicação e divisão
@@ -18,8 +19,8 @@ function calculator() {
                     /* Ambos os índices apagado abaixo foram usados para realizar o cálculo acima. portanto, a partir desse
                        momento eles são inúteis, pois seu propósito já foi alcançado. para evitar conflito no resultado, é
                        necessário apagá-los. */
-                    this.operation.splice(index + 1, 1); // Excluindo o índice anterior
-                    this.operation.splice(index - 1, 1); // Excluindo o índice posterior
+                    this.operation.splice(index + 1, 1); // Excluindo o índice posterior
+                    this.operation.splice(index - 1, 1); // Excluindo o índice anterior
 
                     index = 0; // O index deverá percorrer o array novamente, portanto, será zerado
                 } else if (this.operation[index] === "/") {
@@ -62,8 +63,9 @@ function calculator() {
         },
 
         clear() {
-            this.operation = [];
             this.calculation = [];
+            this.operation = [];
+            this.argument = '';
             this.result = '';
         },
 
@@ -81,7 +83,7 @@ function calculator() {
                 this.operation.push(number, signal); // Enviando o número e o sinal para o array da chave 'operation'
                 this.calculation.push(number, signal);
 
-                return ''; // A variável 'argument' será esvaziada para inserir mais um número e um sinal no formato string
+                return ''; // A chave 'argument' será esvaziada para inserir mais um número e um sinal no formato string
             }
 
             // Caso o sinal da operação não tenha sido inserido ainda, a variável 'argument' não será esvaziada
@@ -89,7 +91,7 @@ function calculator() {
         },
 
         executeCalculation(number) {
-            // Se não houve nenhum número após o último sinal de operação do cálculo, um erro será emitido
+            // Se não houver nenhum número após o último sinal de operação do cálculo, um erro será emitido
             if (this.signals.includes(this.operation[this.operation.length - 1])) {
                 if (number !== '') {
                     this.operation.push(number);
@@ -106,6 +108,7 @@ function calculator() {
                     this.operation.push(number);
                     this.calculation.push(number);
                 } else {
+                    this.showOperation('');
                     return "Insira um número primeiro!";
                 }
             }
@@ -116,58 +119,55 @@ function calculator() {
             this.result = this.operation[0];
             this.showOperation(this.result)
 
-            console.log(this);
-            this.clear();
-
             return this.result;
+        },
+
+        getCommands(key){
+            // Verificando se as chaves enviadas (seja pelo teclado ou pelos botões em HTML) são válidOs
+            if (this.validKeys.includes(key)) {
+                if (key !== "Backspace" && key !== "Delete" && key !== "Enter" && key !== "C" && key !== "CE" && key !== "=") {
+                    this.argument += key;
+    
+                    let result = this.organizeOperation(this.argument);
+    
+                    if (result === 'Insira um número primeiro!') {
+                        console.log(result);
+                        this.argument = '';
+                    } else {
+                        this.showOperation(this.argument);
+                        this.argument = result;
+                    }
+    
+                } else if (key === "Backspace" || key === "C") {
+                    this.argument = this.argument.slice(0, -1); // Deletando 1 caractere por vez na string
+                    this.showOperation(this.argument);
+
+                } else if(key === "Delete" || key === "CE"){
+                    this.clear();
+                    this.showOperation('');
+    
+                } else if (key === "Enter" || key === "=") {
+                    let result = this.executeCalculation(this.argument);
+                    this.clear();
+
+                    console.log(result);
+                }
+            }
         }
     }
 }
 
 (() => {
-    // A variável 'argument' vai armazenar 1 número e um sinal de operação por vez, no formato string
-    let argument = '';
     const calcObj = calculator(); // Fabricando o objeto através da função
 
     // Realizando a operação pelas teclas do teclado
     document.addEventListener('keydown', (event) => {
-
-        // Verificando se as teclas pressionadas são válidas
-        if (calcObj.validKeys.includes(event.key)) {
-            if (event.key !== "Backspace" && event.key !== "Enter") {
-                argument += event.key;
-
-                let result = calcObj.organizeOperation(argument);
-
-                if (result === 'Insira um número primeiro!') {
-                    console.log(result);
-                    argument = '';
-                } else {
-                    calcObj.showOperation(argument);
-                    argument = result;
-                }
-
-            } else if (event.key === "Backspace") {
-                argument = argument.slice(0, -1); // Deletando 1 caractere por vez na string
-                calcObj.showOperation(argument);
-
-            } else if (event.key === "Enter") {
-                let result = calcObj.executeCalculation(argument);
-                argument = '';
-
-                console.log(result);
-            }
-        }
+        calcObj.getCommands(event.key);        
     });
 
+    // Realizando a operação pelos botões do site
     document.addEventListener('click', (event) => {
         let element = event.target;
-
-        console.log(element.textContent);
-
-        // Falta fazer
-        // Fazer os botões do html funcionar
-        // Realizar cálculo com parênteses
-        // Realizar operações fracionárias
+        calcObj.getCommands(element.textContent)
     })
 })();
