@@ -3,7 +3,7 @@ function calculator() {
         validKeys: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '(', ')', '*', '/', '+', '-', 'Enter', 'Backspace', 'Delete', '=', 'C', 'CE'],
         signals: ["*", "/", "+", "-", "(", ")"],
         operation: [],
-        calculation: [], 
+        calculation: [],
         result: '',
         argument: '', // A chave 'argument' vai armazenar 1 número e um sinal de operação por vez, no formato string
 
@@ -74,9 +74,7 @@ function calculator() {
             if (this.signals.includes(counts[counts.length - 1])) {
                 let number = counts.slice(0, -1); // O número da operação estará entre o primeiro e o penúltimo índice da string 
 
-                if (number === '') { // caso não haja número na string, um erro retornará
-                    return 'Insira um número primeiro!';
-                }
+                if (number === '') return 'Insira um número primeiro!'; // caso não haja número na string, um erro retornará
 
                 let signal = counts[counts.length - 1]; // o sinal da operação ficará no último índice da string
 
@@ -122,14 +120,14 @@ function calculator() {
             return this.result;
         },
 
-        getCommands(key){
+        getCommands(key) {
             // Verificando se as chaves enviadas (seja pelo teclado ou pelos botões em HTML) são válidOs
             if (this.validKeys.includes(key)) {
                 if (key !== "Backspace" && key !== "Delete" && key !== "Enter" && key !== "C" && key !== "CE" && key !== "=") {
                     this.argument += key;
-    
+
                     let result = this.organizeOperation(this.argument);
-    
+
                     if (result === 'Insira um número primeiro!') {
                         console.log(result);
                         this.argument = '';
@@ -137,15 +135,15 @@ function calculator() {
                         this.showOperation(this.argument);
                         this.argument = result;
                     }
-    
+
                 } else if (key === "Backspace" || key === "C") {
                     this.argument = this.argument.slice(0, -1); // Deletando 1 caractere por vez na string
                     this.showOperation(this.argument);
 
-                } else if(key === "Delete" || key === "CE"){
+                } else if (key === "Delete" || key === "CE") {
                     this.clear();
                     this.showOperation('');
-    
+
                 } else if (key === "Enter" || key === "=") {
                     let result = this.executeCalculation(this.argument);
                     this.clear();
@@ -162,7 +160,7 @@ function calculator() {
 
     // Realizando a operação pelas teclas do teclado
     document.addEventListener('keydown', (event) => {
-        calcObj.getCommands(event.key);        
+        calcObj.getCommands(event.key);
     });
 
     // Realizando a operação pelos botões do site
