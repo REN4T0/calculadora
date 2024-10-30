@@ -4,6 +4,10 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
+body{
+    overflow-x: hidden;
+}
+
 main{
     width: 25vw;
     background-color: #606060;
@@ -59,7 +63,28 @@ button{
     width: 25%;
     padding: 5% 5%;
 
+    font-size: 2vw;
+
     background-color: #b0b0b0;
     border: 1px solid #606060;
     cursor: pointer;
+}
+
+.alert{
+    width: 20vw;
+    height: 10vw;
+
+    position: absolute;
+    top: 1rem;
+    right: -15rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-shadow: 1px 3px 5px 1px #00000082;
+    text-align: center;
+    border-radius: 5px;
+
+    transition: ease 0.5s;
 }

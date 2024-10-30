@@ -1,7 +1,7 @@
 function calculator() {
     return {
-        validKeys: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '(', ')', '*', '/', '+', '-', 'Enter', 'Backspace', 'Delete', '=', 'C', 'CE'],
-        signals: ["*", "/", "+", "-", "(", ")"],
+        validKeys: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '×', '÷', '+', '-', 'Enter', 'Backspace', 'Delete', '=', 'C', 'CE'],
+        signals: ["×", "÷", "+", "-"],
         operation: [],
         calculation: [],
         result: '',
@@ -11,7 +11,7 @@ function calculator() {
             // Muliplicação e divisão
 
             for (let index = 0; index < this.operation.length; index++) {
-                if (this.operation[index] === "*") {
+                if (this.operation[index] === "×") {
                     /* O índice que possui o sinal passará a conter o resultado da operação entre os números que estão nos
                        índices anterior e posterior a esse. */
                     this.operation[index] = Number(this.operation[index - 1]) * Number(this.operation[index + 1]);
@@ -23,7 +23,7 @@ function calculator() {
                     this.operation.splice(index - 1, 1); // Excluindo o índice anterior
 
                     index = 0; // O index deverá percorrer o array novamente, portanto, será zerado
-                } else if (this.operation[index] === "/") {
+                } else if (this.operation[index] === "÷") {
                     this.operation[index] = Number(this.operation[index - 1] / Number(this.operation[index + 1]));
                     this.operation.splice(index + 1, 1);
                     this.operation.splice(index - 1, 1);
@@ -73,10 +73,13 @@ function calculator() {
             // A cada sinal de operação inserida na string, a expressão será armazenada em um array, presente na chave 'operation'
             if (this.signals.includes(counts[counts.length - 1])) {
                 let number = counts.slice(0, -1); // O número da operação estará entre o primeiro e o penúltimo índice da string 
-
-                if (number === '') return 'Insira um número primeiro!'; // caso não haja número na string, um erro retornará
-
                 let signal = counts[counts.length - 1]; // o sinal da operação ficará no último índice da string
+
+                // caso não haja número na string, um erro retornará
+                if (number === '') {
+                    this.showOperation('');
+                    return {status: 'error', msg: "Insira um número primeiro"}
+                };
 
                 this.operation.push(number, signal); // Enviando o número e o sinal para o array da chave 'operation'
                 this.calculation.push(number, signal);
@@ -95,7 +98,7 @@ function calculator() {
                     this.operation.push(number);
                     this.calculation.push(number);
                 } else {
-                    return "A conta não pode fechar com um sinal em aberto!";
+                    return {status: 'error', msg: "A conta não pode fechar com um sinal em aberto!"};
                 }
             }
 
@@ -107,7 +110,7 @@ function calculator() {
                     this.calculation.push(number);
                 } else {
                     this.showOperation('');
-                    return "Insira um número primeiro!";
+                    return {status: 'error', msg: "Insira um número primeiro"};
                 }
             }
 
@@ -117,19 +120,25 @@ function calculator() {
             this.result = this.operation[0];
             this.showOperation(this.result)
 
-            return this.result;
+            return {status: 'success', calc: this.calculation.join(' '), msg: `O resultado é ${this.result}`};
         },
 
         getCommands(key) {
+            // Permitindo enviar os sinais de multiplicação e divisão pelo teclado
+            if(key === "*"){
+                key = '×'
+            } else if (key === "/"){
+                key = '÷';
+            }
+            
             // Verificando se as chaves enviadas (seja pelo teclado ou pelos botões em HTML) são válidOs
             if (this.validKeys.includes(key)) {
                 if (key !== "Backspace" && key !== "Delete" && key !== "Enter" && key !== "C" && key !== "CE" && key !== "=") {
                     this.argument += key;
-
                     let result = this.organizeOperation(this.argument);
 
-                    if (result === 'Insira um número primeiro!') {
-                        console.log(result);
+                    if (result.status === 'error') {
+                        this.showAlert(result.msg);
                         this.argument = '';
                     } else {
                         this.showOperation(this.argument);
@@ -140,17 +149,31 @@ function calculator() {
                     this.argument = this.argument.slice(0, -1); // Deletando 1 caractere por vez na string
                     this.showOperation(this.argument);
 
-                } else if (key === "Delete" || key === "CE") {
+                } else if (key === "Delete" || key === "CE") { // Resetando a calculadora
                     this.clear();
                     this.showOperation('');
 
                 } else if (key === "Enter" || key === "=") {
                     let result = this.executeCalculation(this.argument);
-                    this.clear();
-
-                    console.log(result);
+                    
+                    if(result.status === 'error'){
+                        this.showAlert(result.msg);
+                    } else {
+                        console.log(result);
+                        this.clear();
+                    }
                 }
             }
+        },
+
+        showAlert(message){
+            document.querySelector(".alert p").innerText = message;
+            document.querySelector(".alert").style = 'right: 1rem';
+
+            setTimeout(()=>{
+                document.querySelector(".alert").style = 'right: -15rem';
+            }, 3000)
+
         }
     }
 }
