@@ -24,5 +24,6 @@ determina se a tecla pressionada (ou até mesmo um elemento clicado) é válido 
 + <kbd>Del</kbd> = Limpar
 
 ## Notas adicionais
-A partir do momento em que é inserido um operador matemático (sinal), a expressão digitada é salva e não pode mais ser apagada com o <kbd>Backspace</kbd>, sendo necessário limpar o
+1. A partir do momento em que é inserido um operador matemático (sinal), a expressão digitada é salva e não pode mais ser apagada com o <kbd>Backspace</kbd>, sendo necessário limpar o
 display.
+2. Um objeto é gerado propositalmente no console.
