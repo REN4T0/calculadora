@@ -8,7 +8,7 @@ main{
 }
 
 table{
-    height: 20vw;
+    height: 25vw;
     width: 20vw;
 }
 
@@ -27,6 +27,7 @@ input{
     outline: none;
     border-radius: 10px;
 
+    font-size: 1.5vw;
     background-color: #0088ff52;
 }
 
@@ -38,9 +39,9 @@ button{
     border-radius: 5px;
 
     cursor: pointer;
-    background-color: #c7c7c7;
-
+    font-size: 1.5vw;
     transition: 0.1s linear;
+    background-color: #c7c7c7;
 }
 
 .circle{
