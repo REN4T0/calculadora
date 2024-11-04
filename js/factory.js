@@ -1,3 +1,5 @@
+import { showAlert } from "./assets/alert.js";
+
 function calculator() {
     return {
         validKeys: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '×', '÷', '+', '-', 'Enter', 'Backspace', 'Delete', '=', 'C', 'CE'],
@@ -138,7 +140,7 @@ function calculator() {
                     let result = this.organizeOperation(this.argument);
 
                     if (result.status === 'error') {
-                        this.showAlert(result.msg);
+                        showAlert(result.msg);
                         this.argument = '';
                     } else {
                         this.showOperation(this.argument);
@@ -157,23 +159,13 @@ function calculator() {
                     let result = this.executeCalculation(this.argument);
                     
                     if(result.status === 'error'){
-                        this.showAlert(result.msg);
+                        showAlert(result.msg);
                     } else {
                         console.log(result);
                         this.clear();
                     }
                 }
             }
-        },
-
-        showAlert(message){
-            document.querySelector(".alert p").innerText = message;
-            document.querySelector(".alert").style = 'right: 1rem';
-
-            setTimeout(()=>{
-                document.querySelector(".alert").style = 'right: -15rem';
-            }, 3000)
-
         }
     }
 }

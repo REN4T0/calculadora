@@ -1,49 +1,63 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./style.css">
-    <script src="./js/script.js" defer></script>
+    <link rel="stylesheet" href="./css/constructor.css">
+    <script type="module" src="./js/constructor.js" defer></script>
     <title>Calculadora</title>
 </head>
-
 <body>
-    <main class="calculator">
-        <section class="display">
-            <div class="operation">
-                <p></p>
-            </div>
-            <div class="result">
-                <p></p>
-            </div>
-        </section>
+    <header>
+        <a href="./factory.html">Cálculadora criada com Factory Function</a>
+    </header>
+    
+    <main>
+        <table>
+            <tr>
+                <td colspan="4">
+                    <input type="text" name="display" id="display" readonly>
+                </td>
+            </tr>
+            <tr>
+                <td><button class="circle clear" value="CE">CE</button></td>
+                <td><button class="circle del" value="C">C</button></td>
+                <td><button value="(">(</button></td>
+                <td><button value=")">)</button></td>
+            </tr>
 
-        <section class="buttons">
-            <button class="zero">CE</button>
-            <button class="zero">C</button>
-            <button>7</button>
-            <button>8</button>
-            <button>9</button>
-            <button>÷</button>
-            <button>4</button>
-            <button>5</button>
-            <button>6</button>
-            <button>×</button>
-            <button>1</button>
-            <button>2</button>
-            <button>3</button>
-            <button>+</button>
-            <button class="zero">0</button>
-            <button>=</button>
-            <button>-</button>
-        </section>
+            <tr>
+                <td><button value="7">7</button></td>
+                <td><button value="8">8</button></td>
+                <td><button value="9">9</button></td>
+                <td><button value="*">*</button></td>
+            </tr>
+
+            <tr>
+                <td><button value="4">4</button></td>
+                <td><button value="5">5</button></td>
+                <td><button value="6">6</button></td>
+                <td><button value="/">/</button></td>
+            </tr>
+
+            <tr>
+                <td><button value="1">1</button></td>
+                <td><button value="2">2</button></td>
+                <td><button value="3">3</button></td>
+                <td><button value="+">+</button></td>
+            </tr>
+
+            <tr>
+                <td><button value="0">0</button></td>
+                <td><button value=".">.</button></td>
+                <td><button class="circle equal" value="=">=</button></td>
+                <td><button value="-">-</button></td>
+            </tr>
+        </table>
     </main>
 
     <div class="alert">
-        <p>Hello World!</p>
+        <p></p>
     </div>
 </body>
-
 </html>
