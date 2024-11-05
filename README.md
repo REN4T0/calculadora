@@ -43,7 +43,7 @@ determina se a tecla pressionada (ou até mesmo um elemento clicado) é válido 
 + <kbd>Enter</kbd> ou <kbd>=</kbd> = Realizar cálculo
 + <kbd>Backspace</kbd> = Apagar 1 caractere por vez 
 + <kbd>Del</kbd> = Limpar
-+ <kbd>,</kbd> = Adiciona um ponto que simula a vírgula fracionária (Disponível apenas na calculadora de Construct Function)
++ <kbd>.</kbd> = Adiciona um ponto que simula a vírgula fracionária (Disponível apenas na calculadora de Construct Function)
 + <kbd>shift</kbd> + <kbd>9</kbd> = Abre parênteses (Disponível apenas na calculadora de Construct Function)
 + <kbd>shift</kbd> + <kbd>0</kbd> = Fecha parênteses (Disponível apenas na calculadora de Construct Function)
 
